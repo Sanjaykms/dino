@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initail-scale=1">
+        <title>DINO</title>
+        <meta name="theme-color" content="#66ffe0">
+    </head>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            min-width: 500px;
+            min-height: 200px;
+        }
+        .start{
+            border-bottom: 2px solid black;
+            width: 500px;
+            height: 200px; 
+            position: relative;
+            overflow: hidden;
+            margin: auto;
+        }
+        .char{
+            width: 20px;
+            height: 50px;
+            background-color: red;
+            position: relative;
+            top: 150px;
+        }
+        .animate{
+            animation: jump 0.5s linear;
+        }
+        .obj{
+            width: 20px;
+            height: 20px;
+            background-color: blue;
+            position: relative;
+            top: 130px;
+            left: 520px;
+            animation: obj 1s linear infinite;
+            animation-delay: 1.5s;
+        }
+        @keyframes obj{
+            0%{
+                left: 480px;
+            }
+            100%{
+                left: -40px;
+            }
+        }
+        @keyframes jump{
+            0%{
+                top: 150px;
+            }
+            30%{
+                top: 100px;
+            }
+            70%{
+                top: 100px;
+            }
+            100%{
+                top: 150px;
+            }
+        }
+        .score{
+            position: absolute;
+            width: 60px;
+            height: 40px;
+            background-color: #ccc;
+            left: 430px;
+            top:10px;
+            text-align: center;
+        }
+        .reload{
+            width: 20px;
+            height: 20px;
+            border: 2px solid;
+            border-color: #888 transparent #888 #888;
+            border-radius: 50%;
+            position: absolute;
+            top:10px;
+            left: 5px;
+            transition: transform 1s;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        /*loading */
+        .newload{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            background-color: #fbff85;
+        }
+        .boxxes{
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background-color: #f4fc19;
+        }
+        .boxxes span{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        .boxxes span::before{
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: lightblue;
+            animation: animated 2s linear infinite;
+            transform: scaleX(0);
+        }
+        .boxxes span:nth-child(1){
+            transform: rotate(0);
+        }
+        .boxxes span:nth-child(2){
+            transform: rotate(90deg);
+        }
+        .boxxes span:nth-child(3){
+            transform: rotate(180deg);
+        }
+        .boxxes span:nth-child(4){
+            transform: rotate(270deg);
+        }
+        @keyframes animated{
+            0%{
+                transform: scaleX(0);
+                transform-origin: left;
+            }
+            25%{
+                transform: scaleX(1);
+                transform-origin: left;
+            }
+            25.0001%{
+                transform-origin: right;
+            }
+            50%,100%{
+                transform: scaleX(0);
+                transform-origin: right;
+            }
+            
+        }
+        .boxxes span:nth-child(1)::before{
+            animation-delay: 0s;
+        }
+        .boxxes span:nth-child(2)::before{
+            animation-delay: 0.5s;
+        }
+        .boxxes span:nth-child(3)::before{
+            animation-delay: 1s;
+        }
+        .boxxes span:nth-child(4)::before{
+            animation-delay: 1.5s;
+        }
+    </style>
+    <body onload="myfunction1()">
+        <div class="newload">
+            <div class="boxxes">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            </div>
+        <div class="start" id="star" onclick="jump()" style="display: none;">
+            <div class="char" id="chart"></div>
+            <div class="obj"  id="ob"></div>
+            <div class="score">
+                <p id="second">0</p>
+                <p id="first">0</p>
+            </div>
+            <div class="reload" id="load">
+            </div>
+        </div>
+        <script>
+             //loading
+             var loadingscr;
+            function myfunction1(){
+                setTimeout(showout,3000);
+            }
+            function showout(){
+                document.querySelector(".newload").style.display="none";
+                document.querySelector(".start").style.display="block";
+            }
+
+            var t=0;
+            var star=document.getElementById("star");
+            var char=document.getElementById("chart");
+            var o=document.getElementById("ob");
+            function jump(){
+                if(char.classList!="animate"){
+                    char.classList.add("animate");
+                }
+                setTimeout(function(){
+                    char.classList.remove("animate");
+                },500)
+            }
+            var dead=setInterval(function(){
+               var top=parseInt(window.getComputedStyle(char).getPropertyValue("top"));
+               var left=parseInt(window.getComputedStyle(o).getPropertyValue("left"));
+               if(parseInt(first.innerHTML)%200===0&&parseInt(first.innerHTML)!=0&&t==0){
+                       document.documentElement.style.backgroundColor="black";
+                       document.documentElement.style.color="red";
+                       star.style.borderBottomColor="green";
+                       t=1;
+               }else if(t===1&&parseInt(first.innerHTML)%200===0){
+                   document.documentElement.style.backgroundColor="white";
+                   document.documentElement.style.color="black";
+                   star.style.borderBottomColor="black";
+                   t=0;
+                }
+               if(top>=130 && left<20 && left>0){
+                   o.style.animation="none";
+                   o.style.display="none";
+                   document.documentElement.style.backgroundColor="white";
+                   document.documentElement.style.color="black";
+                   star.style.borderBottomColor="black";
+                   if(parseInt(seco.innerHTML)<parseInt(first.innerHTML)){
+                        seco.innerHTML=first.innerHTML;
+                    }
+                   clearInterval(sc);
+                   alert("poda fool...... :)   YOUR SCORE : "+first.innerHTML);
+                   first.innerHTML="0";
+               }
+            },1)
+            var first=document.getElementById("first");
+            var seco=document.getElementById("second");
+            var sc=setInterval(loop,100);
+            function loop(){
+                var s=parseInt(first.innerHTML);
+                first.innerHTML=s+1;
+            }  
+            document.body.addEventListener("keydown",function(event){
+                if(event.keyCode==32||event.keyCode==38||event.keyCode==13){
+                    event.preventDefault();
+                    jump();
+                }
+            })
+            var z=document.querySelector("#load");
+            var s=z.addEventListener("click",function(event){
+                if(o.style.display=="none"){
+                    if(z.style.transform==""){
+                       z.style.transform="rotate(360deg)";
+                    }
+                    else{
+                        z.style.transform="";
+                    }
+                    o.style.animation="obj 1s linear infinite 1.5s";
+                    o.style.display="block";
+                    sc=setInterval(loop,100);
+                }
+            })   
+        </script>
+    </body>
+</html>
